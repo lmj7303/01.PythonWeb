@@ -1,6 +1,7 @@
 #MJLee add
 chromedriver.exe
 roadapikey.txt
+ngrok_auth.txt
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
