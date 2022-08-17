@@ -15,7 +15,8 @@
     <nav class="navbar bg-dark navbar-dark fixed-top">
         <!-- Brand/logo -->
         <a class="navbar-brand" style="margin-left:50px;margin-right:100px;" href="#">
-            <img src="static/img/logo.png" alt="Logo" style="height:45px;">
+            <!--<img src="static/img/logo.png" alt="Logo" style="height:45px;">-->
+            <img src="{{url_for('static', filename='img/logo.png')}}" alt="Logo" style="height:45px;">
         </a>
         
         <!-- Links -->
@@ -40,31 +41,39 @@
                         <tr class="d-flex">
                             <td class="col-2">언어 선택</td>
                             <td class="col-8">
-                                <div class="form-check-inline">
+                                {% for option in options %}
+                                    <div class="form-check-inline">
+                                        <label class="form-check-label">
+                                            <input type="radio" class="form-check-input" name="lang" value="{{option.val}}"
+                                                {% if loop.first %}checked{% endif %}> {{option.disp}}
+                                        </label>
+                                    </div>
+                                {% endfor %}
+                                <!-- <div class="form-check-inline">
                                     <label class="form-check-label">
-                                        <input type="radio" class="form-check-input" name="lang" value="en" checked>영어
+                                        <input type="radio" class="form-check-input" name="lang" value="en" checked> 영어
                                     </label>
                                 </div>
                                 <div class="form-check-inline">
                                     <label class="form-check-label">
-                                        <input type="radio" class="form-check-input" name="lang" value="jp">일어
+                                        <input type="radio" class="form-check-input" name="lang" value="jp"> 일어
                                     </label>
                                 </div>
                                 <div class="form-check-inline">
                                     <label class="form-check-label">
-                                        <input type="radio" class="form-check-input" name="lang" value="cn">중국어
+                                        <input type="radio" class="form-check-input" name="lang" value="cn"> 중국어
                                     </label>
                                 </div>
                                 <div class="form-check-inline">
                                     <label class="form-check-label">
-                                        <input type="radio" class="form-check-input" name="lang" value="fr">프랑스어
+                                        <input type="radio" class="form-check-input" name="lang" value="fr"> 프랑스어
                                     </label>
                                 </div>
                                 <div class="form-check-inline">
                                     <label class="form-check-label">
-                                        <input type="radio" class="form-check-input" name="lang" value="es">스페인어
+                                        <input type="radio" class="form-check-input" name="lang" value="es"> 스페인어
                                     </label>
-                                </div>
+                                </div> -->
                             </td>
                             <td class="col-2"></td>
                         </tr>
@@ -79,6 +88,13 @@
                             <td class="col-2 mt-2">이미지 파일</td>
                             <td class="col-8">
                                 <input class="form-control" type="file" id="image" name="image">
+                            </td>
+                            <td class="col-2"></td>
+                        </tr>
+                        <tr class="d-flex">
+                            <td class="col-2 mt-2">노래 가사</td>
+                            <td class="col-8" style="text-align: left;">
+                                <textarea cols="80" rows="5" id="lyrics" name="lyrics"></textarea>
                             </td>
                             <td class="col-2"></td>
                         </tr>
