@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="ko">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="style.css">
+        <title>문화재</title>
+        
+        <style>
+            @font-face {
+                font-family: "Gugi-Regular.woff";
+                src: url("C:Workspace/project/static/fonts/Gugi-Regular.woff") format("woff");
+            }
+            body, html {
+                height: 100%;
+                margin: 0;
+                font-family: "Gugi-Regular.woff";
+            }
+
+            .bgimg-1 {
+                position: relative;
+                background-position: center;
+                background-repeat: no-repeat;
+                background-size: cover;
+                /* background-image: url(C:Workspace/project/static/image/숭례문야경1.jpg); */
+                background: #000000;
+                background: -webkit-linear-gradient(to right, #000000, #434343);
+                background: linear-gradient(to right, #000000, #434343);
+                height: 100%;
+            }
+            .caption {
+                position: absolute;
+                top: 5%;
+                width: 100%;
+                text-align: center;
+                color: #000;
+            }
+            .caption span.border {
+                background:rgba(0, 0, 0, 0.1);
+                color: white;
+                padding: 1px;
+                font-size: 60px;
+                font-weight: bold;
+                letter-spacing: 10px;
+                display: block;
+                width: 60%;
+                margin: 0 auto;
+                border-radius: 15px 15px 15px 15px;
+            }
+            /* 하단 */
+            .footer {
+                position: absolute;
+                color: white;
+                font-family: "Gugi-Regular.woff";
+                font-weight: bold;
+                text-align: right;
+                font-size: 15px;
+                bottom: 8px;
+                right: 16px;
+                text-shadow: -1px 0 20px black, 0 1px 20px black, 1px 0 20px black, 0 -1px 20px black;
+        
+            }
+            .information{
+                color: white;
+                width: 250px;
+                position: relative;
+                font-size: 50px;
+                left:1000px;
+                top:170px;
+            }
+            .map_info {
+                color: white;
+                width: 250px;
+                position: relative;
+                font-size: 50px;
+                top: 170px; }
+            
+            #map {
+                position: relative;
+                top: 200px;
+                left: 100px;
+            }
+
+            #name{
+                color: white;
+                position: relative;
+                left:50%;
+            }
+
+            #place_info{
+                color: white;
+                position: relative;
+                left:50%;
+            }
+
+        </style>
+    </head>
+
+    <body>
+        <div class="bgimg-1">
+            <div class="caption">
+                <span class="border">검색 결과 화면</span>
+            </div>
+
+            <span class="information">문화재 정보</span>
+        
+            <span class="map_info">찾아오는 길</span>
+
+        <div>
+            <div id="map" style="width:500px;height:300px;"></div>
+                    <script type="text/javascript" src="http://dapi.kakao.com/v2/maps/sdk.js?appkey=72bbc03a6cd9cefbbb0ea1b17067912a&libraries=services"></script>
+                    <script>
+                    // 마커를 클릭하면 장소명을 표출할 인포윈도우 입니다
+                    var infowindow = new kakao.maps.InfoWindow({zIndex:1});
+
+                    var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+                        mapOption = {
+                            center: new kakao.maps.LatLng(37.566826, 126.9786567), // 지도의 중심좌표
+                            level: 3 // 지도의 확대 레벨
+                        };  
+
+                    // 지도를 생성합니다    
+                    var map = new kakao.maps.Map(mapContainer, mapOption); 
+
+                    // 장소 검색 객체를 생성합니다
+                    var ps = new kakao.maps.services.Places(); 
+
+                    // 키워드로 장소를 검색합니다
+                    ps.keywordSearch('{{name}}', placesSearchCB); 
+
+                    // 키워드 검색 완료 시 호출되는 콜백함수 입니다
+                    function placesSearchCB (data, status, pagination) {
+                        if (status === kakao.maps.services.Status.OK) {
+
+                            // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
+                            // LatLngBounds 객체에 좌표를 추가합니다
+                            var bounds = new kakao.maps.LatLngBounds();
+
+                            for (var i=0; i<data.length; i++) {
+                                displayMarker(data[i]);    
+                                bounds.extend(new kakao.maps.LatLng(data[i].y, data[i].x));
+                            }       
+
+                            // 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
+                            map.setBounds(bounds);
+                        } 
+                    }
+
+                    // 지도에 마커를 표시하는 함수입니다
+                    function displayMarker(place) {
+                                            
+                        // 마커를 생성하고 지도에 표시합니다
+                        var marker = new kakao.maps.Marker({
+                            map: map,
+                            position: new kakao.maps.LatLng(place.y, place.x) 
+                        });
+
+                        // 마커에 클릭이벤트를 등록합니다
+                        kakao.maps.event.addListener(marker, 'click', function() {
+                            // 마커를 클릭하면 장소명이 인포윈도우에 표출됩니다
+                            infowindow.setContent('<div style="padding:5px;font-size:12px;">' + place.place_name + '</div>');
+                            infowindow.open(map, marker);
+                        });
+                    }
+                    </script>
+        </div>
+        <div id="name">
+            <div>
+                <script>
+                    if (name=='숭례문'){
+                        document.write(숭례문)
+                    }else if (name=='경주_불국사_다보탑'){
+                        document.write(경주_불국사_다보탑)
+                    }else if (name=='경주_태종무열왕릉비'){
+                        document.write(경주_태종무열왕릉비)
+                    }else if (name=='경주_첨성대'){
+                        document.write(경주_첨성대)
+                    }else if (name=='청자_상감운학문_매병'){
+                        document.write(청자_상감운학문_매병)
+                    }else if (name=='경주_불국사_금동비로자나불좌상'){
+                        document.write(경주_불국사_금동비로자나불좌상)
+                    }else if (name=='금동미륵보살반가사유상'){
+                        document.write(금동미륵보살반가사유상)
+                    }else if (name=='천마총_금관'){
+                        document.write(천마총_금관)
+                    }else if (name=='창경궁_자격루'){
+                        document.write(창경궁_자격루)
+                    }else if (name=='백제_금동대향로'){
+                        document.write(백제_금동대향로)
+                    }else if (name=='성덕대왕신종'){
+                        document.write(성덕대왕신종)
+                    }else if (name=='익산_미륵사지석탑'){
+                        document.write(익산_미륵사지석탑)
+                    }else if (name=='종묘_정전'){
+                        document.write(종묘_정전)
+                    }else if (name=='훈민정음'){
+                        document.write(훈민정음)
+                    }else if (name=='청주_용두사지_철당간'){
+                        document.write(청주_용두사지_철당간)
+                    }else {안동_하회탈_및_병산탈}
+                        document.write(안동_하회탈_및_병산탈)
+                </script>
+            </div>
+        </div>
+        <div id="place_info">
+            <div>
+                <script>
+                    if (name=='숭례문'){
+                        document.write((崇禮門)은 조선의 수도였던 서울의 4대문(大門) 중의 하나로 남쪽의 대문이다. 흔히 남대문(南大門)이라고도 부른다.)
+                    }else if (name=='경주_불국사_다보탑'){
+                        document.write(다보탑(多寶塔, 영어: Dabotap 또는 Dabo Pagoda)은 경주 불국사에 있는 하대 신라 시기의 석탑이다. 국보 제20호이며, 불국사 대웅전 앞뜰에 석가탑과 상대하여 위치하고 있다.) 
+                    }else if (name=='경주_태종무열왕릉비'){
+                        document.write(경주 태종무열왕릉비(慶州 太宗武烈王陵碑)는 경상북도 경주시 서악동, 무열왕릉에 있는 신라 중기(7세기)에 건립된 신라 태종무열왕의 능비(陵碑)이다. 1962년 12월 20일 대한민국의 국보 제25호로 지정되었다.)
+                    }else if (name=='경주_첨성대'){
+                        document.write(첨성대(瞻星臺)는 경상북도 경주시 반월성 동북쪽에 위치한 신라 중기의 석조 건축물로, 선덕여왕때에 세워진 세계에서 현존하는 가장 오래된 천문대로 알려져 있다 1962년 12월 20일 국보 제31호로 지정되었다.)
+                    }else if (name=='청자_상감운학문_매병'){
+                        document.write(청자 상감 운학문 매병(靑磁 象嵌雲鶴紋 梅甁)은 상감기법을 써서 운학문을 새긴, 고려의 전형적인 청자 매병이다. 1962년 12월 20일 대한민국의 국보 제68호로 지정되었다.)
+                    }else if (name=='경주_불국사_금동비로자나불좌상'){
+                        document.write(경주 불국사 금동비로자나불좌상(慶州 佛國寺 金銅毘盧遮那佛坐像)은 경상북도 경주시 불국사 비로전에 있는 통일신라의 금동 불상이다.)
+                    }else if (name=='금동미륵보살반가사유상'){
+                        document.write(금동미륵보살반가사유상(金銅彌勒菩薩半跏思惟像)은 삼국 시대에 제작된 금동 미륵보살 반가사유상이다. )
+                    }else if (name=='천마총_금관'){
+                        document.write(천마총 금관은 천마총에서 발견된 신라 때 금관이다. 1978년 12월 7일 대한민국의 국보 제188호로 지정되었다. )
+                    }else if (name=='창경궁_자격루'){
+                        document.write(물을 보내는 파수호(播水壺)가 3개, 물받이인 수수통(受水筒)이 2개 남아 있는데, 1536년(중종 31) 다시 만들었던 자격루의 물통들만이 지금 남아 있다. 현재 덕수궁에 보관되어 있다.)
+                    }else if (name=='백제_금동대향로'){
+                        document.write(백제 금동대향로(百濟金銅大香爐)는 백제에서 만들어진 금동 향로이다. 1993년 12월 12일 부여군 능산리 절터의 목곽 수로 안에서 발견되었으며 국보 제287호로 지정되었다. 
+                    }else if (name=='성덕대왕신종'){)
+                        document.write(성덕대왕신종(聖德大王神鍾)은 신라 시대에 만들어진 범종이다. 설화에 따라 에밀레종으로 부르거나 봉덕사(奉德寺)에 걸려 있던 종이라 하여 봉덕사종이라 부르기도 한다. 1962년 12월 20일 대한민국의 국보 제29호로 지정되었다.)
+                    }else if (name=='익산_미륵사지석탑'){
+                        document.write(익산 미륵사지 석탑(益山 彌勒寺址 石塔)은 전라북도 익산시 금마면 미륵사지에 있으며, 한국에 남아있는 석탑 중 가장 오래된 석탑으로 국보 제11호로 지정되어 있다. )
+                    }else if (name=='종묘_정전'){
+                        document.write(종묘 정전(宗廟正殿)은 조선시대 역대 왕과 왕비, 그리고 세상을 떠난 후에 왕으로 추존된 왕과 왕비의 신위를 봉안한 왕실의 사당건축물이며, 총 101m의 긴 건물로, 종묘의 중심이다. 1985년 1월 8일 대한민국의 국보 제227호로 지정되었다.)
+                    }else if (name=='훈민정음'){
+                        document.write(『훈민정음』(訓民正音, 중세 한국어: 훈민정음)은 한글의 옛 이름(첫 이름)으로 세종대왕이 창제한 문자의 명칭이자 훈민정음의 창제원리와 사용법 등을 해설해 놓은 책의 제목이기도 하다.해례본은 1962년에 국보 70호로 지정되었으며 1997년에 유네스코 세계기록유산으로 지정되었다.)
+                    }else if (name=='청주_용두사지_철당간'){
+                        document.write(청주 용두사지 철당간(淸州龍頭寺址鐵幢竿)은 충청북도 청주시 용두사에 있는 당간으로 국보 제41호다.)
+                    }else {안동_하회탈_및_병산탈}
+                        document.write(하회탈 및 병산탈(河回탈 및 屛山탈)은 국보 121호로 지정된 민속공예류의 장신구 문화유산이다. 경상북도 안동시 하회마을과 병산마을에서 현존하여 이어지고 있어 지어진 이름이다. 1964년 3월 30일 대한민국의 국보 제121호로 지정되었다.)
+                </script>
+            </div>
+        </div>
+            <div class = "footer">
+                <div class = "team name">
+                    TEAM 양동이
+                </div>
+    
+                <div class = "member">
+                    <p>이승민 안규용 이명재 이철승 조성근</p>
+                </div>
+            </div>   
+        </div>
+
+    </body>
+
+</html>

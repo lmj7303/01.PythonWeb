@@ -3,7 +3,6 @@ chromedriver.exe
 roadapikey.txt
 ngrok_auth.txt
 upload
-project
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
