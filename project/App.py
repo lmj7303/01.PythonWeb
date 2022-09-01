@@ -108,12 +108,13 @@ def base():
 @app.route('/upload',methods=['POST'])
 def upload():
     f_image= request.files['file']
-    fname = f_image.filename
-
-    f_image.save('../static/upload/'+fname+'.jpg')
-    img = np.array(Image.open('../static/upload/'+fname+'.jpg'))/255.0
+    print(f_image)
+    fname = f_image.filename[:-4]
+    print(fname)
+    f_image.save('./static/upload/'+fname+'.jpg')
+    img = np.array(Image.open('./static/upload/'+fname+'.jpg'))/255.0
     img_resized = cv2.resize(img, (224,224))
-    model = keras.models.load_model('../best_weight75.h5')
+    model = keras.models.load_model('./static/best_weight75.h5')
     result = classes[model.predict(img_resized.reshape(-1,224,224,3)).argmax() + 1]
     print(f'예측값 : {result}')
     info=infomation[result]
@@ -124,7 +125,7 @@ def upload():
     print(juso)
     print(res)
     print(hotel)
-    return render_template('result1.html', result = result, juso=juso, info=info, res=res, hotel=hotel)
+    return render_template('result1.html', result = result, juso=juso, info=info, res=res, hotel=hotel, fname= fname)
 
 if __name__=='__main__':
     app.run(debug=True)
