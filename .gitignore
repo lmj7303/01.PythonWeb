@@ -4,6 +4,10 @@ roadapikey.txt
 kakaoapikey.txt
 ngrok_auth.txt
 upload
+fonts
+seoul.mp4
+upload.svg
+OFL.txt
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
