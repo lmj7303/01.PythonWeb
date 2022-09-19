@@ -111,10 +111,11 @@ def upload():
     print(f_image)
     fname = f_image.filename[:-4]
     print(fname)
-    f_image.save('./static/upload/'+fname+'.jpg')
-    img = np.array(Image.open('./static/upload/'+fname+'.jpg'))/255.0
+    # "C:\Workspace\01.PythonWeb\project\static"
+    f_image.save('C:/Workspace/01.PythonWeb/project/static/upload/'+fname+'.jpg')
+    img = np.array(Image.open('C:/Workspace/01.PythonWeb/project/static/upload/'+fname+'.jpg'))/255.0
     img_resized = cv2.resize(img, (224,224))
-    model = keras.models.load_model('./static/best_weight75.h5')
+    model = keras.models.load_model('C:/Workspace/01.PythonWeb/project/static/best_weight75.h5')
     result = classes[model.predict(img_resized.reshape(-1,224,224,3)).argmax() + 1]
     print(f'예측값 : {result}')
     info=infomation[result]
