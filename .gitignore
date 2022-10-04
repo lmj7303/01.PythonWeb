@@ -8,6 +8,7 @@ fonts
 seoul.mp4
 upload.svg
 OFL.txt
+static/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
